@@ -4,82 +4,139 @@ require "rspec"
 describe GildedRose do
 
 
+  describe 'regular item' do 
+  	let(:i) { 0 }
 
-  it "vest should decrease by 1" do
-    subject.update_quality
-    expect(subject.items[0].quality).to eq(19)
-    expect(subject.items[0].sell_in).to eq(9)
+  	context 'after one day' do
+  		before(:each) do 
+  			subject.update_quality
+  		end
+  		it "quality and sell in should decrease by 1" do
+  			expect(subject.items[i].quality).to eq(19)
+  			expect(subject.items[i].sell_in).to eq(9)
+  		end
+    end
+
+    context 'after 100 days' do
+      before(:each) do
+        100.times {subject.update_quality }
+      end
+      it "quality should be zero" do
+        expect(subject.items[i].quality).to eq(0)
+      end
+    end
   end
 
-  it "brie should decrease by 1" do
-    subject.update_quality
-    expect(subject.items[1].quality).to eq(1)
-    expect(subject.items[1].sell_in).to eq(1)
+  describe 'aged brie' do
+    let(:i) { 1 }
 
+    context 'after one day' do
+      before(:each) do
+        subject.update_quality
+      end
+      it "quality should increase by 1" do
+        expect(subject.items[i].quality).to eq(1)
+      end
+    end
+
+    context 'after 100 days' do
+      before(:each) do
+        100.times {subject.update_quality }
+      end
+      it "quality should be 50" do
+        expect(subject.items[i].quality).to eq(50)
+      end
+    end
   end
 
+  describe 'legendary item' do
+    let(:i) { 3 }
+    
+    context 'after one day' do
+      before(:each) do
+        subject.update_quality
+      end
+      it "quality should be the same" do
+        subject.update_quality
+        expect(subject.items[i].quality).to eq(80)
+      end
+    end
 
-  it "elixir should decrease by 1" do
-    subject.update_quality
-    expect(subject.items[2].quality).to eq(6)
-    expect(subject.items[2].sell_in).to eq(4)
-
+    context 'after 100 days' do
+      before(:each) do
+        100.times { subject.update_quality }
+      end
+      it "quality should be the same" do
+        expect(subject.items[i].quality).to eq(80)
+      end
+    end
   end
 
-  it "sulfuras should decrease by 1" do
-    subject.update_quality
-    expect(subject.items[3].quality).to eq(80)
-    expect(subject.items[3].sell_in).to eq(0)
+  describe 'backstage ticket' do
+    let(:i) { 4 }
+    
+    context 'after one day' do
+      before(:each) do
+        subject.update_quality
+      end
+      it "quality should increase by one" do
+        expect(subject.items[i].quality).to eq(21)
+      end
+    end
 
+    context 'after six days' do
+      before(:each) do
+        6.times{ subject.update_quality }
+      end
+      it "quality should begin increasing by two" do
+        expect(subject.items[i].quality).to eq(27)
+      end
+    end
+
+    context 'after eleven days' do
+      before(:each) do
+        11.times{ subject.update_quality }
+      end
+      it "quality should begin increasing by three" do
+        expect(subject.items[i].quality).to eq(38)
+      end
+    end
+
+    context 'after 100 days' do
+      before(:each) do
+        100.times { subject.update_quality }
+      end
+      it "quality should be zero" do
+        expect(subject.items[i].quality).to eq(0)
+      end
+    end
   end
 
-  it "backstage should decrease by 1" do
-    subject.update_quality
-    expect(subject.items[4].quality).to eq(21)
-    expect(subject.items[4].sell_in).to eq(14)
+  describe 'conjured' do
+    let(:i) { 5 }
+    
+    context 'after one day' do
+      before(:each) do
+        subject.update_quality
+      end
+      it "quality should decrease by two" do
+        expect(subject.items[i].quality).to eq(4)
+      end
+    end
 
-  end
-
-  it "conjured should decrease by 1" do
-    subject.update_quality
-    expect(subject.items[5].quality).to eq(4)
-    expect(subject.items[5].sell_in).to eq(2)
-
-  end
-
-  it "after many updates" do
-  	100.times{ subject.update_quality }
-  	expect(subject.items[0].quality).to eq(0)
-  	expect(subject.items[2].quality).to eq(0)
-  	expect(subject.items[4].quality).to eq(0)
-  	expect(subject.items[5].quality).to eq(0)
-  end
-
-  it "after 10 updates" do 
-  	10.times{ subject.update_quality }
-  	expect(subject.items[0].quality).to eq(10)
-  	expect(subject.items[1].quality).to eq(18)
-  	expect(subject.items[2].quality).to eq(0)
-  	expect(subject.items[3].quality).to eq(80)
-  	expect(subject.items[4].quality).to eq(35)
-  	expect(subject.items[5].quality).to eq(0)
-  	expect(subject.items[0].sell_in).to eq(0)
-  	expect(subject.items[1].sell_in).to eq(-8)
-  	expect(subject.items[2].sell_in).to eq(-5)
-  	expect(subject.items[3].sell_in).to eq(0)
-  	expect(subject.items[4].sell_in).to eq(5)
-  	expect(subject.items[5].sell_in).to eq(-7)
-
-  end
-
-  it "after 20 updates" do 
-  	20.times{ subject.update_quality }
-  	expect(subject.items[0].quality).to eq(0)
-  	expect(subject.items[1].quality).to eq(38)
-  	expect(subject.items[2].quality).to eq(0)
-  	expect(subject.items[3].quality).to eq(80)
-  	expect(subject.items[4].quality).to eq(0)
-  	expect(subject.items[5].quality).to eq(0)
+    context 'after 100 days' do
+      before(:each) do
+        100.times { subject.update_quality }
+      end
+      it "quality should be zero" do
+        expect(subject.items[i].quality).to eq(0)
+      end
+    end
   end
 
 end
+
+
+
+				
+
